@@ -6,3 +6,7 @@ class PropertyType(models.Model):
 
     name = fields.Char(required=True)
     property_ids = fields.One2many("property", "property_type_id")
+
+    _sql_constraints = [
+        ('unique_name', 'unique(name)', 'The name must be unique'),
+    ]

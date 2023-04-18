@@ -44,6 +44,8 @@ class PropertyOffer(models.Model):
         accepted_offer = self.property_id.offer_ids.filtered(lambda o : o.status == 'accepted')
         if accepted_offer:
             raise exceptions.UserError("More than one offer cannot be accepted")
+        if self.property_id.expected_price and self.price < self.property_id.expected_price * 0.9:
+            raise exceptions.UserError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer'")
         self.status = "accepted"
         self.property_id.selling_price = self.price
         self.property_id.buyer_id = self.buyer_id
@@ -51,3 +53,11 @@ class PropertyOffer(models.Model):
     def action_deny(self):
         for record in self:
             record.status = "refused"
+
+    _sql_constraints = [
+        (
+            "check_price",
+            "CHECK(price > 0)",
+            "Offer price must be strictly positive",
+        )
+    ]
