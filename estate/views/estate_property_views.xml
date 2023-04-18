@@ -53,7 +53,7 @@
                                 <group>
                                     <field name="description"/>
                                     <field name="bedrooms" />
-                                    <field name="living_area" string="Living Area (sqm)" />
+                                    <field name="living_area"/>
                                     <field name="facades" />
                                     <field name="garage" />
                                     <field name="garden" />
@@ -92,7 +92,7 @@
           <field name="postcode" />
           <field name="expected_price" />
           <field name="bedrooms" />
-          <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]" />
+          <field name="living_area" filter_domain="[('living_area', '>=', self)]" />
           <field name="facades" />
             <separator />
           <filter

@@ -3,11 +3,12 @@ from odoo import fields, models
 
 class PropertyOffer(models.Model):
     _name = "property.offer"
-    _description = "Property Offer"
+    _description = """
+    This model represents an offer made by a buyer for a property. It has fields to track the offer price, its status (accepted or refused), and the partner (buyer) who made the offer.
+    """
 
     price = fields.Float()
     status = fields.Selection(
-        string="Status",
         selection=[
             ("accepted", "Accepted"),
             ("refused", "Refused")
