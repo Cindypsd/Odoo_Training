@@ -4,11 +4,7 @@ from odoo import fields, models
 
 class EstateProperty(models.Model):
     _name = "property"
-    _description = """
-    This model provides a representation of a real estate property, including important fields such as the property name, description, postcode, date availability, expected price, selling price, number of bedrooms, living area, number of facades, and other features such as garage and garden.
-
-    This model also includes fields to track the property's status, such as whether it is new, has an offer, has been accepted, sold, or canceled. It also includes a field to identify the salesperson responsible for selling the property and a field to track any potential buyers.
-    """
+    _description = "This model provides a representation of a real estate"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -24,10 +20,10 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[
-            ('North', 'North'),
-            ('South', 'South'),
-            ('East', 'East'),
-            ('West', 'West')
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
         ],
     )
     state = fields.Selection(
@@ -44,15 +40,15 @@ class EstateProperty(models.Model):
         default="new",
     )
     active = fields.Boolean(default=True)
-    property_type_id = fields.Many2one("property.type", string="Property Type")
+    property_type_id = fields.Many2one("property.type")
     salesperson_id = fields.Many2one(
         "res.users",
         string="Salesman",
         default=lambda self: self.env.user.id,
     )
 
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag_ids = fields.Many2many("property.tag", string="Tags")
+    buyer_id = fields.Many2one("res.partner", copy=False)
+    tag_ids = fields.Many2many("property.tag")
     partner_id = fields.Many2one("res.partner")
     offer_ids = fields.One2many("property.offer", "property_id")
 
