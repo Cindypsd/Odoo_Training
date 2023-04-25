@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string = 'Living Area (sqm)')
+    living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -52,7 +52,7 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one("res.partner")
     offer_ids = fields.One2many("property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
-    best_offer = fields.Float(compute="_compute_best_price", string="Best Offer")
+    best_offer = fields.Float(compute="_compute_best_price")
 
 
     @api.depends("living_area", "garden_area")
