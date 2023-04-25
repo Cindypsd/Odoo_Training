@@ -13,11 +13,11 @@
       <field name="arch" type="xml">
         <form string="Property Type">
           <sheet>
-            <group>
+            <div class="oe_title">
                 <h1>
-                    <field name="name"/>
+                    <field name="name" />
                 </h1>
-            </group>
+            </div>
           </sheet>
         </form>
       </field>
