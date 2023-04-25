@@ -1,4 +1,5 @@
-from odoo import fields, models
+from datetime import timedelta,datetime
+from odoo import api,fields, models
 
 
 class PropertyOffer(models.Model):
@@ -15,3 +16,15 @@ class PropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("property", required=True)
+    validity = fields.Integer(compute="_compute_validity", inverse="_inverse_validity")
+    date_deadline = fields.Datetime(date_only=True)
+
+    @api.depends("date_deadline")
+    def _compute_validity(self):
+        for record in self:
+            record.validity = abs((record.date_deadline - fields.Datetime.now()).days) if record.date_deadline else 7
+
+    def _inverse_validity(self):
+        for record in self:
+            record.date_deadline = fields.Datetime.now() + timedelta(days=(record.validity))
+

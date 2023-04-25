@@ -14,7 +14,7 @@
         <form string="Property Tag">
             <sheet>
                 <group>
-                    <field name="name"/>
+                    <field name="name" string="Name" />
                 </group>
             </sheet>
         </form>
