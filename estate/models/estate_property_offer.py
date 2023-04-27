@@ -62,3 +62,13 @@ class PropertyOffer(models.Model):
             "Offer price must be strictly positive",
         )
     ]
+
+    @api.model
+    def create(self, vals):
+        property_obj = self.env['property'].browse(vals['property_id'])
+        offers = property_obj.offer_ids
+        max_offer = max(offers.mapped("price"), default=0)
+        if vals["price"] < max_offer:
+            raise exceptions.UserError("Cannot create an offer with a lower amount than an existing offer.")
+        property_obj.state = 'offer_received'
+        return super().create(vals)
