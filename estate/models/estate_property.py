@@ -5,6 +5,7 @@ from odoo import api,fields, models, tools, exceptions
 class EstateProperty(models.Model):
     _name = "property"
     _description = "This model provides a representation of a real estate"
+    _order= "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -53,6 +54,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
     best_offer = fields.Float(compute="_compute_best_price")
+    sequence = fields.Integer(default=1)
 
 
     @api.depends("living_area", "garden_area")
@@ -148,4 +150,3 @@ class EstateProperty(models.Model):
             "Selling price must be strictly positive",
         )
     ]
-
