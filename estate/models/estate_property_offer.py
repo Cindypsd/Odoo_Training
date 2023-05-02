@@ -1,10 +1,10 @@
 from datetime import timedelta
-from odoo import api,fields, models, exceptions
-
+from odoo import api,fields, models, exceptions, tools
 
 class PropertyOffer(models.Model):
     _name = "property.offer"
     _description = "This model represents an offer made by a buyer for a property. "
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -19,6 +19,7 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one("property", required=True)
     validity = fields.Integer(compute="_compute_validity", inverse="_inverse_validity", default = 7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one("property.type", related="property_id.property_type_id", readonly=True, store=True)
 
     @api.depends("validity")
     def _compute_date_deadline(self):
