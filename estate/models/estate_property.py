@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
-from odoo import api,fields, models, exceptions
+from odoo import api,fields, models, tools, exceptions
 
 class EstateProperty(models.Model):
     _name = "property"
@@ -120,7 +120,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-
     def action_sold(self):
         for record in self:
             if record.state == "canceled":
@@ -128,9 +127,6 @@ class EstateProperty(models.Model):
             elif record.state == "sold":
                 raise exceptions.UserError("Property is already sold")
             record.state = "sold"
-
-
-
 
     def action_cancel(self):
         for record in self:
@@ -140,4 +136,16 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Property is already canceled")
             record.state = "canceled"
 
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price must be strictly positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price > 0)",
+            "Selling price must be strictly positive",
+        )
+    ]
 
