@@ -122,22 +122,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    def action_sold(self):
-        for record in self:
-            if record.state == "canceled":
-                raise exceptions.UserError("Canceled property cannot be sold")
-            elif record.state == "sold":
-                raise exceptions.UserError("Property is already sold")
-            record.state = "sold"
-
-    def action_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise exceptions.UserError("Sold property cannot be canceled")
-            elif record.state == "canceled":
-                raise exceptions.UserError("Property is already canceled")
-            record.state = "canceled"
-
     _sql_constraints = [
         (
             "check_expected_price",

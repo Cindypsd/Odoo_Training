@@ -42,14 +42,19 @@ class PropertyOffer(models.Model):
             record.date_deadline = fields.Date.today() + timedelta(days=(record.validity))
 
     def action_confirm(self):
-        accepted_offer = self.property_id.offer_ids.filtered(lambda o : o.status == 'accepted')
+        accepted_offer = self.find_accepted_offer()
         if accepted_offer:
             raise exceptions.UserError("More than one offer cannot be accepted")
         if self.property_id.expected_price and self.price < self.property_id.expected_price * 0.9:
             raise exceptions.UserError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer'")
         self.status = "accepted"
+        self.property_id.state = "offer_accepted"
         self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.buyer_id
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.partner_id = self.partner_id
+
+    def find_accepted_offer(self):
+        return self.property_id.offer_ids.filtered(lambda o : o.status == 'accepted')
 
     def action_deny(self):
         for record in self:
